@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>UO APP BUSYNESS ASSESSMENT TOOL</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #1c1c1c;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            width: 300px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        input[type="password"] {
+            padding: 10px;
+            width: calc(100% - 20px);
+            margin-left: -10px; /* Moves the input slightly to the left */
+            margin-bottom: 20px;
+            border: 1px solid white;
+            background-color: #1c1c1c;
+            color: white;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ccc;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>UO APP BUSYNESS ASSESSMENT TOOL</h1>
+        <form id="loginForm">
+            <input type="password" id="password" placeholder="Enter Password">
+            <button type="submit">Login</button>
+            <p class="error" id="error">Incorrect Password. Try Again.</p>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('error');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const correctPassword = 'UOM'; // Correct password set to "UOM"
+            const enteredPassword = passwordInput.value;
+
+            if (enteredPassword === correctPassword) {
+                window.location.href = 'tutorcentre.html'; // Redirect if correct
+            } else {
+                errorMessage.style.display = 'block'; // Show error if incorrect
+            }
+        });
+    </script>
+</body>
+</html>
