@@ -1,358 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BUSYNESS TOOL</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: black;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #333;
-      flex: 1;
-    }
-    label {
-      font-weight: bold;
-    }
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    select {
-      width: 100%;
-      padding: 8px;
-      margin: 10px 0;
-      box-sizing: border-box;
-      background-color: #444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-    input[type="checkbox"] {
-      margin-left: 10px;
-    }
-    button {
-      background-color: #555;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px 0;
-    }
-    button:hover {
-      background-color: #777;
-    }
-    #errorMsg {
-      color: red;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    footer {
-      text-align: center;
-      padding: 10px;
-      font-size: 0.8em;
-      color: #aaa;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>uOttawa Study Space Monitor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #1c1c1c;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid white;
+            background-color: #1c1c1c;
+            color: white;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ccc;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>BUSYNESS ASSESSMENT TOOL</h2>
-    <!-- Centered login button, red before login -->
-    <div style="text-align: center;">
-      <button id="loginBtn" style="background-color: red;">Login</button>
+    <div class="container">
+        <h1>UO APP BUSYNESS ASSESSMENT TOOL</h1>
+        <form id="dataForm">
+            <input type="text" name="building" placeholder="Building" required>
+            <input type="text" name="room" placeholder="Room" required>
+            <input type="number" name="count" placeholder="Count" required>
+            <input type="text" name="name" placeholder="Your Name" autocomplete="name" required>
+            <input type="datetime-local" name="datetime" required>
+            <textarea name="notes" placeholder="Notes (optional)"></textarea>
+            <button type="submit">Submit</button>
+            <p class="error" id="error">Submission failed. Try Again.</p>
+        </form>
     </div>
-    <form id="sessionForm">
-      <label for="student">Student:</label>
-      <!-- Initially disabled so that names are not accessible until logged in -->
-      <select id="student" required disabled>
-        <option value="" disabled selected>Select a student</option>
-        <!-- Format: Student,Tutor,Email,Price,S2 Fee -->
-        <option value="Isaac,Ryan,N/A,30,2">Isaac</option>
-        <option value="Sophie,Ryan,sophiehenri613@gmail.com,30,6">Sophie</option>
-        <option value="Declan,Ryan,declanhagley@gmail.com,30,6">Declan</option>
-        <option value="Isla,Nick,lindseycurran@hotmail.com,35,7">Isla</option>
-        <option value="Cameryn,Nick,lindseycurran@hotmail.com,30,4">Cameryn</option>
-        <option value="Clare,Nick,clarekwiatkowski00@gmail.com,40,8">Clare</option>
-        <option value="Munreet,Jonah,munreetcheema16@gmail.com,30,6">Munreet</option>
-        <option value="Ikjot,Ryan,IkjotCheema2008@gmail.com,30,6">Ikjot</option>
-        <option value="Cassidy,Ryan,cassidyy148@gmail.com,30,6">Cassidy</option>
-      </select><br />
 
-      <!-- Auto-filled Email field -->
-      <label for="email">E-mail:</label>
-      <input type="text" id="email" required readonly /><br />
+    <script>
+        const form = document.getElementById('dataForm');
+        const errorMessage = document.getElementById('error');
 
-      <label for="tutor">Tutor:</label>
-      <input type="text" id="tutor" required readonly /><br />
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-      <!-- Date field is now changeable -->
-      <label for="date">Date:</label>
-      <input type="date" id="date" required /><br />
+            // Here you would handle submission to your backend or Google Sheet
+            // For now, this example just logs the data and simulates success
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            console.log(data);
 
-      <!-- Input for Session Length -->
-      <label for="sessionLength">Session Length (Hrs):</label>
-      <input type="number" id="sessionLength" required value="1" min="0.1" step="0.1"/><br />
-
-      <!-- Input for Hours Traveled -->
-      <label for="hoursTravelled">Hours Traveled (if applic.):</label>
-      <input type="number" id="hoursTravelled" placeholder="Leave blank if none" min="0" step="0.1"/><br />
-
-      <label for="price">Price:</label>
-      <input type="text" id="price" required readonly /><br />
-
-      <label for="s2Fee">S2 Fee:</label>
-      <input type="text" id="s2Fee" required readonly /><br />
-
-      <label for="tutorPaid">Tutor Paid:</label>
-      <input type="checkbox" id="tutorPaid" /><br />
-
-      <label for="studentCharged">Student Charged:</label>
-      <input type="checkbox" id="studentCharged" /><br />
-
-      <center><button type="submit">Submit</button></center>
-      <div id="errorMsg"></div>
-    </form>
-  </div>
-
-  <footer></footer>
-
-  <!-- Load the new GIS library -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <!-- Load the Google API client library -->
-  <script src="https://apis.google.com/js/api.js"></script>
-  <script>
-    // Replace with your own credentials:
-    const CLIENT_ID = '110744525010-34st0v7r172u2uerpi2e3j1ghkk555qk.apps.googleusercontent.com';
-    const API_KEY = 'AIzaSyBfkl02IsZznHMlkNhyqzDQr4TfUJc6-Bw';
-    const SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
-    const SPREADSHEET_ID = '1Mj5WJU8NhcAjbvGbia3S8Uo74ng_zKo8mJSE3ANy7lM';
-    const RANGE = 'Sheet1!A2:G';
-    const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
-
-    let accessToken = null;
-    let tokenClient;
-    let basePrice = 0;   // Original price from student selection
-    let baseS2Fee = 0;   // Original S2 fee from student selection
-
-    // Set today's date in the "date" field using local time.
-    function setDefaultDate() {
-      const today = new Date();
-      // Format the date as YYYY-MM-DD using local time.
-      const localDate = today.toLocaleDateString('en-CA'); // en-CA gives ISO format date
-      document.getElementById('date').value = localDate;
-    }
-    setDefaultDate();
-
-    // Auto-fill fields when a student is selected.
-    // Option format: Student,Tutor,Email,Price,S2Fee
-    document.getElementById('student').addEventListener('change', () => {
-      const selectedData = document.getElementById('student').value.split(',');
-      document.getElementById('tutor').value = selectedData[1];
-      document.getElementById('email').value = selectedData[2];
-      basePrice = parseFloat(selectedData[3]);
-      baseS2Fee = parseFloat(selectedData[4]);
-      // Set price and S2 Fee to their base values
-      updatePriceAndS2Fee();
-      document.getElementById('tutorPaid').checked = false;
-      document.getElementById('studentCharged').checked = false;
-    });
-
-    // Helper function to update Price and S2 Fee.
-    function updatePriceAndS2Fee() {
-      const sessionLength = parseFloat(document.getElementById('sessionLength').value) || 1;
-      const hoursTravelled = parseFloat(document.getElementById('hoursTravelled').value) || 0;
-      // Extra travel cost: $15 for every 0.25 hrs = $60 per hr.
-      const extraTravelCost = hoursTravelled * 60;
-      // Final price = (Session Length * basePrice) + extra travel cost.
-      const finalPrice = sessionLength * basePrice + extraTravelCost;
-      const finalS2Fee = sessionLength * baseS2Fee;
-      document.getElementById('price').value = finalPrice.toFixed(2);
-      document.getElementById('s2Fee').value = finalS2Fee.toFixed(2);
-    }
-
-    // Update price when session length or hours travelled changes.
-    document.getElementById('sessionLength').addEventListener('input', updatePriceAndS2Fee);
-    document.getElementById('hoursTravelled').addEventListener('input', updatePriceAndS2Fee);
-
-    // Validate form inputs and return an array of error messages (if any)
-    function validateForm() {
-      let errors = [];
-      const student = document.getElementById('student').value;
-      if (!student) {
-        errors.push("Please select a student.");
-      }
-      const sessionLength = document.getElementById('sessionLength').value;
-      if (!sessionLength || isNaN(sessionLength) || parseFloat(sessionLength) <= 0) {
-        errors.push("Session Length must be a positive number.");
-      }
-      const hoursTravelled = document.getElementById('hoursTravelled').value;
-      if (hoursTravelled !== "" && (isNaN(hoursTravelled) || parseFloat(hoursTravelled) < 0)) {
-        errors.push("Hours Traveled must be a non-negative number.");
-      }
-      const date = document.getElementById('date').value;
-      if (!date) {
-        errors.push("Date is missing.");
-      }
-      const tutor = document.getElementById('tutor').value;
-      if (!tutor) {
-        errors.push("Tutor is missing.");
-      }
-      const email = document.getElementById('email').value;
-      if (!email) {
-        errors.push("Email is missing.");
-      }
-      const price = document.getElementById('price').value;
-      if (!price) {
-        errors.push("Price is missing.");
-      }
-      const s2Fee = document.getElementById('s2Fee').value;
-      if (!s2Fee) {
-        errors.push("S2 Fee is missing.");
-      }
-      return errors;
-    }
-
-    // Initialize the gapi client for Sheets API
-    function initGapiClient() {
-      return gapi.client.init({
-        apiKey: API_KEY,
-        discoveryDocs: [DISCOVERY_DOC],
-      }).then(() => {
-        console.log("GAPI client initialized for Sheets API.");
-      }).catch((error) => {
-        console.error("Error initializing GAPI client:", error);
-      });
-    }
-
-    // Request an access token using the new GIS token client
-    function requestAccessToken() {
-      tokenClient.requestAccessToken();
-    }
-
-    // Append form data to the Google Sheet
-    function appendData() {
-      if (!accessToken) {
-        alert("Please sign in to get an access token first.");
-        return;
-      }
-      // Set the token on the gapi client
-      gapi.client.setToken({ access_token: accessToken });
-
-      // Gather form data
-      const student = document.getElementById('student').value.split(',')[0];
-      const email = document.getElementById('email').value;
-      const tutor = document.getElementById('tutor').value;
-      const date = document.getElementById('date').value;
-      const sessionLength = document.getElementById('sessionLength').value;
-      const hoursTravelled = document.getElementById('hoursTravelled').value;
-      const price = document.getElementById('price').value;
-      const s2Fee = document.getElementById('s2Fee').value;
-      const tutorPaid = document.getElementById('tutorPaid').checked ? 'Yes' : 'No';
-      const studentCharged = document.getElementById('studentCharged').checked ? 'Yes' : 'No';
-
-      // Prepare row data according to spreadsheet header:
-      // Date and Time, Student, E-mail, Tutor, Session Length (Hrs), Hours Traveled, Price, S2 Fee, Tutor Paid, Client Charged, Notes
-      const values = [
-        [date, student, email, tutor, sessionLength, hoursTravelled, price, s2Fee, tutorPaid, studentCharged, '']
-      ];
-      const resource = { values };
-
-      gapi.client.sheets.spreadsheets.values.append({
-        spreadsheetId: SPREADSHEET_ID,
-        range: RANGE,
-        valueInputOption: 'RAW',
-        resource: resource
-      }).then((response) => {
-        console.log("Data appended successfully:", response);
-        alert("Session logged successfully.");
-      }).catch((error) => {
-        console.error("Error appending data:", error);
-        alert("Failed to log session.");
-      });
-    }
-
-    // Handle form submission: validate inputs, request access token if needed, then append data.
-    document.getElementById('sessionForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // Clear previous error messages
-      document.getElementById('errorMsg').textContent = "";
-
-      const errors = validateForm();
-      if (errors.length > 0) {
-        document.getElementById('errorMsg').textContent = errors.join(" ");
-        return;
-      }
-
-      if (!accessToken) {
-        // Set a callback to get the token then proceed
-        tokenClient.callback = (response) => {
-          if (response.error) {
-            console.error("Error obtaining access token:", response);
-            alert("Error obtaining access token.");
-            return;
-          }
-          accessToken = response.access_token;
-          console.log("Access token obtained:", accessToken);
-          // Enable the student dropdown once logged in
-          document.getElementById('student').disabled = false;
-          // Disable the login button and change text to smiley when logged in.
-          const loginBtn = document.getElementById('loginBtn');
-          loginBtn.textContent = ":)";
-          loginBtn.disabled = true;
-          appendData();
-        };
-        requestAccessToken();
-      } else {
-        appendData();
-      }
-    });
-
-    // Attach event listener to the login button.
-    document.getElementById('loginBtn').addEventListener('click', () => {
-      tokenClient.callback = (response) => {
-        if (response.error) {
-          console.error("Error obtaining access token:", response);
-          alert("Error obtaining access token.");
-          return;
-        }
-        accessToken = response.access_token;
-        console.log("Access token obtained:", accessToken);
-        // Enable the student dropdown once logged in
-        document.getElementById('student').disabled = false;
-        // Change login button text to ":)" and disable it after login
-        const loginBtn = document.getElementById('loginBtn');
-        loginBtn.textContent = ":)";
-        loginBtn.disabled = true;
-      };
-      requestAccessToken();
-    });
-
-    // On window load, initialize the gapi client and token client.
-    window.onload = function() {
-      gapi.load('client', () => {
-        initGapiClient();
-      });
-      tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPE,
-        // Set an empty callback initially; will be overwritten by the login button.
-        callback: () => {}
-      });
-    };
-  </script>
+            // You can redirect or reset the form here
+            alert('Submission successful!');
+            form.reset();
+        });
+    </script>
 </body>
 </html>
